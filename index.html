@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Final Project</title>
+
+  <link rel="stylesheet" type="text/css" href="main.css">
+
+  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Roster</h1>
+    <span id="countIns"></span>
+
+    <h2 id="instructor"></h2>
+    <span id="insTrans"></span>
+    <hr>
+
+    <img id="loader" src="https://cryptoyum.com/wp-content/themes/cryptoyum/images/ajax-loading-gif.gif">
+
+    <label for="fName" class="col-lg-2 control-label">First Name</label>
+    <input id="fName" type="text">
+
+    <label for="lName" class="col-lg-2 control-label">Last Name</label>
+    <input id="lName" type="text">
+
+    <label for="age" class="col-lg-2 control-label">Age</label>
+    <input id="age" type="text">
+
+    <button id="button">Update</button>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+  <script>
+    if (typeof web3 !== 'undefined') {
+      web3 = new Web3(web3.currentProvider);
+    } else {
+      // set the provider you want from Web3.providers
+      web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    }
+
+    web3.eth.defaultAccount = web3.eth.accounts[0];
+
+    console.log("Sender's address: " + web3.eth.defaultAccount);
+
+    var CoursetroContract = web3.eth.contract([{
+      "constant": true,
+      "inputs": [{
+        "name": "_address",
+        "type": "address"
+      }],
+      "name": "getInstructor",
+      "outputs": [{
+        "name": "",
+        "type": "uint256"
+      }, {
+        "name": "",
+        "type": "string"
+      }, {
+        "name": "",
+        "type": "string"
+      }],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }, {
+      "constant": false,
+      "inputs": [{
+        "name": "_address",
+        "type": "address"
+      }, {
+        "name": "_age",
+        "type": "uint256"
+      }, {
+        "name": "_fName",
+        "type": "string"
+      }, {
+        "name": "_lName",
+        "type": "string"
+      }],
+      "name": "setInstructor",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }, {
+      "constant": true,
+      "inputs": [],
+      "name": "getInstructors",
+      "outputs": [{
+        "name": "",
+        "type": "address[]"
+      }],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }, {
+      "constant": true,
+      "inputs": [{
+        "name": "",
+        "type": "uint256"
+      }],
+      "name": "instructorAccts",
+      "outputs": [{
+        "name": "",
+        "type": "address"
+      }],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }, {
+      "constant": true,
+      "inputs": [],
+      "name": "countInstructors",
+      "outputs": [{
+        "name": "",
+        "type": "uint256"
+      }],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }, {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    }, {
+      "anonymous": false,
+      "inputs": [{
+        "indexed": false,
+        "name": "fName",
+        "type": "string"
+      }, {
+        "indexed": false,
+        "name": "lName",
+        "type": "string"
+      }, {
+        "indexed": false,
+        "name": "age",
+        "type": "uint256"
+      }],
+      "name": "instructorInfo",
+      "type": "event"
+    }]);
+
+    var Coursetro = CoursetroContract.at("0x16046c445b7318d0b706e43147f9dabc9dde5db9");
+
+    console.log("Contract's address: " + Coursetro.address);
+
+    var instructorEvent = Coursetro.instructorInfo({}, 'latest');
+
+    instructorEvent.watch(function(error, result) {
+      if (result) {
+        if (result.blockHash != $("#insTrans").html())
+          $("#loader").hide();
+
+        $("#insTrans").html('Block hash: ' + result.blockHash);
+        $("#instructor").html(web3.toAscii(result.args.fName) + ' ' + web3.toAscii(result.args.lName) + ' (' + result.args.age + ' years old)');
+      } else {
+        $("#loader").hide();
+      }
+    });
+
+    Coursetro.countInstructors((err, res) => {
+      if (res)
+        $("#countIns").html(res.c + ' Instructors');
+    })
+
+    $("#button").click(function() {
+      $("#loader").show();
+      Coursetro.setInstructor(web3.eth.defaultAccount, $("#age").val(), $("#fName").val(), $("#lName").val(), (err, res) => {
+        if (err) {
+          $("#loader").hide();
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
