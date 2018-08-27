@@ -9,6 +9,6 @@ The contract has been deployed on Ropsten testnet at ```0x16046c445b7318d0b706e4
 To Start:
 1. Install node.js
 2. ```cd``` into this project folder
-3. ```npm run start```
+3. ```npm run start```. It will run the browser on a local lite server
 4. Configure Metamask and target it to Ropsten Testnet
 5. Play with it!
