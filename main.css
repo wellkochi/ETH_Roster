@@ -22,14 +22,13 @@ button {
     display:block;
 }
 
-#instructor {
+#person {
     padding:1em;
     background-color:#fff;
     margin: 1em 0;
 }
 
 #loader {
-    width: 100px;
-    display:none;
+    width: 250px;
+    display: none;
 }
-
