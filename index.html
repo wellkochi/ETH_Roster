@@ -80,14 +80,14 @@
 
     $("#button").click(function() {
       $("#loader").show();
-      Coursetro.setPerson(web3.eth.defaultAccount, $("#age").val(), $("#fName").val(), $("#lName").val(), (err, res) => {
+      Roster.setPerson(web3.eth.defaultAccount, $("#age").val(), $("#fName").val(), $("#lName").val(), (err, res) => {
         if (err) {
           $("#loader").hide();
         }
       });
     });
   </script>
-  
+
 </body>
-  
+
 </html>
