@@ -11,4 +11,4 @@ To Start:
 2. ```cd``` into this project folder
 3. ```npm run start```. It will run the browser on a local lite server
 4. Configure Metamask and target it to Ropsten Testnet
-5. Play with it!
+5. Play with it! Type in first name, last name and age, and then hit "Update" button. You will be prompted by Metamask to confirm the transaction. Once the transaction is done, you need to refresh the page to see the updated roster.
