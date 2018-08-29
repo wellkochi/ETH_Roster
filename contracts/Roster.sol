@@ -1,64 +1,66 @@
 pragma solidity ^0.4.24;
 
+// this contract has been deployed on Ropsten - address: 0x8b2d73e65e57b79a07468f873599e4c83b8a87a3
+
 contract Roster{
 
     address owner;
-    
-    // setting up owner address to the contract caller
+
+    // setting up owner address as the contract deployer
     constructor() public {
         owner = msg.sender;
     }
-    
+
    modifier onlyOwner {
        require(msg.sender == owner);
        _;
    }
-   
-   // instructor attribute
-    struct Instructor {
+
+   // Person attribute
+    struct Person {
         uint age;
-        string fName;
-        string lName;
+        bytes16 fName;
+        bytes16 lName;
     }
 
-    mapping (address => Instructor) instructors;
-    
-    // make an array of instructors
-    address[] public instructorAccts;
-    
+    mapping (address => Person) people;
+
+    // make an array of people
+    address[] public peopleCount;
+
     // event
-    event instructorInfo(
-       string fName,
-       string lName,
+    event personInfo(
+       bytes16 fName,
+       bytes16 lName,
        uint age
     );
-    
-    // set up a new instructor, as well as push it to the array
-    function setInstructor(address _address, uint _age, string _fName, string _lName) onlyOwner public {
 
-        instructors[_address].age = _age;
-        instructors[_address].fName = _fName;
-        instructors[_address].lName = _lName;
+    // set up a new person, as well as push it to the people array
+    function setPerson(address _address, uint _age, bytes16 _fName, bytes16 _lName) onlyOwner public {
 
-        instructorAccts.push(_address) -1;
-        
-        // emit this instructor as an event
-        emit instructorInfo(_fName, _lName, _age);
+        people[_address].age = _age;
+        people[_address].fName = _fName;
+        people[_address].lName = _lName;
+
+        peopleCount.push(_address) -1;
+
+        // emit this person as an event
+        emit personInfo(_fName, _lName, _age);
     }
-    
-    // get the array of instructors by address
-    function getInstructors() view public returns(address[]) {
-        return instructorAccts;
+
+    // get the array of people by address
+    function getPeople() view public returns(address[]) {
+        return peopleCount;
     }
-    
-    // get a specific instructor's age, firstName and lastName by taking instructor's address
-    function getInstructor(address _address) view public returns (uint, string, string) {
-        return (instructors[_address].age, instructors[_address].fName, instructors[_address].lName);
+
+    // get a specific person's age, firstName and lastName by taking a person's address
+    function getPerson(address _address) view public returns (uint, bytes16, bytes16) {
+        return (people[_address].age, people[_address].fName, people[_address].lName);
     }
-    
-    // return total number of instructors in the array
-    function countInstructors() view public returns (uint) {
-        return instructorAccts.length;
+
+    // return total number of people in the array
+    function countPeople() view public returns (uint) {
+        return peopleCount.length;
     }
 
 }
