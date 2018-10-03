@@ -1,6 +1,6 @@
 # Roster
 
-This is a simple Ethereum project for 2018 Developer program. You can update a roster to the smart contract and get feedback from a simple web UI.
+This is a simple Ethereum project. You can update a roster to the smart contract and get feedback from a simple web UI.
 
 **Disclaimer:** This project is done by following [this video tutorials](https://www.youtube.com/watch?v=QdG9xsOolJ4&list=PL0lNJEnwfVVMuX2Ds19Wj_7Mcze3FDJr3&index=3). Code has been modified from the tutorial. The project uses Web3 @0.2.x version.
 
